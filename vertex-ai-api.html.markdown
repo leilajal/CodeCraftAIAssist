@@ -1,3 +1,4 @@
+---
 # ----------------------------------------------------------------------------
 #
 #     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -11,10 +12,6 @@
 #     .github/CONTRIBUTING.md.
 #
 # ----------------------------------------------------------------------------
-subcategory: "Vertex AI"
-description: |-
-  Collection of resources to manage IAM policy for Vertex AI Endpoint
----
 
 # IAM policy for Vertex AI Endpoint
 Three different resources help you manage your IAM policy for Vertex AI Endpoint. Each of these resources serves a different use case:
