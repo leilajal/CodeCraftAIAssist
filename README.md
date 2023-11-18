@@ -8,13 +8,13 @@ The repository is structured as follows:
 
 - `resources/`: It contains imporatnt files related to the application.
     1. 'conf.env/': contains important configuration. You need to update your openAI key to work.
-    2. 'coding_questions.db': db that contains question. It is SQLite db
-    3. 'coding_youtube.txt': sample coding results that we used in test.py and notebook
-    4. 'coding_principles.json': It contains Amazon coding principles in json format. 
+    2. 'coding_generated.db': db that contains question. It is SQLite db
+    3. 'coding_description.txt': sample coding results that we used in test.py and notebook
+    4. 'coding_principles.json': It contains coding principles in json format. 
     5. 'random_story.txt': it is a random story which is used as the basedline for comparing similarity to coding principles.
-    6. 'sample_behavioral_questions.txt': You can add more question to this file in the newline. It will be automatically loaded to question db.
-    7. 'sample_coding_questions.txt': You can add more question to this file in the newline. It will be automatically loaded to question db. 
-    8. 'sample_coding_questions.txt': You can add more question to this file in the newline. It will be automatically loaded to question db.  
+    6. 'sample_codes.txt': You can add more question to this file in the newline. It will be automatically loaded to question db.
+    7. 'sample_questions.txt': You can add more samples to this file in the newline. It will be automatically loaded to question db. 
+    8. 'sample_.txt': You can add more examples to this file in the newline. It will be automatically loaded to samples db.  
 - `coachgpt-app.py/`: gradio app to run.
 - 'utility/'
     1. 'helpers.py/`: Helper functions and classes that are needed.
