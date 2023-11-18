@@ -15,16 +15,16 @@ leadership_principles = read_json_file('resources/leadership_principles.json')
 def generate_random_question(choices):
             print("choices", choices)
             if choices == "Coding Question":
-                table = "coding_interview_questions"
-                question = get_random_interview_question(table)
+                table = "coding_code_questions"
+                question = get_random_code_question(table)
                 return question
             elif choices == "ML System Design Question":
-                table = "ml_system_design_interview_questions"
-                question = get_random_interview_question(table)
+                table = "ml_system_design_code_questions"
+                question = get_random_code_question(table)
                 return question
             else:
-                table = "leadership_interview_questions"    
-                question = get_random_interview_question(table)
+                table = "leadership_code_questions"    
+                question = get_random_code_question(table)
             return question
 
 chat = ChatOpenAI(
@@ -39,7 +39,7 @@ chat_creative = ChatOpenAI(
                  max_tokens = 3000, 
                  openai_api_key = OPENAI_API_KEY)
 
-def evaluate_by_ai_interviewer(question_choices, candidate_response_str, random_question):
+def evaluate_by_ai_coding(question_choices, candidate_response_str, random_question):
             
             # Summarize the candidate response to the question
             summarized_response_str = summarize_response(candidate_response_str)
@@ -48,13 +48,13 @@ def evaluate_by_ai_interviewer(question_choices, candidate_response_str, random_
                 print("I am in leadership and behavioural question")
                 
                 # Create a prompt template to use in langchain
-                b_interview_question_prompt_template = PromptTemplate(
-                    input_variables =["interview_question_asked","candidate_response"],
-                    template = b_interview_question_prompt
+                b_code_question_prompt_template = PromptTemplate(
+                    input_variables =["code_question_asked","candidate_response"],
+                    template = b_code_question_prompt
                 )
-                b_interview_question_query = b_interview_question_prompt_template.format(
+                b_code_question_query = b_code_question_prompt_template.format(
                         candidate_response = summarized_response_str,
-                        interview_question_asked = random_question
+                        code_question_asked = random_question
                     )
 
                 b_check_leadership_principle_prompt_template = PromptTemplate(
@@ -68,9 +68,9 @@ def evaluate_by_ai_interviewer(question_choices, candidate_response_str, random_
                     leadership_principles = json.dumps(leadership_principles))
                 
                 # Do multi-threading to speed up the process
-                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(b_interview_question_query,))
+                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(b_code_question_query,))
                 ai_detailed_evaluation_thread = ReturnValueThread(target=chat.predict, args=(b_check_leadership_principle_prompt,))
-                ai_answer_thread = ReturnValueThread(target=chat_creative.predict, args=(b_ai_answer_promt.format(interview_question_asked = random_question),)) 
+                ai_answer_thread = ReturnValueThread(target=chat_creative.predict, args=(b_ai_answer_promt.format(code_question_asked = random_question),)) 
                 sorted_tuple_list_thread = ReturnValueThread(target=calculate_similarity_to_leadership_principles, args=(leadership_principles, summarized_response_str, random_story))
 
                 ai_evaluation_thread.start()
@@ -91,17 +91,17 @@ def evaluate_by_ai_interviewer(question_choices, candidate_response_str, random_
             elif question_choices == "Coding Question":
                  # Create a prompt template to use in langchain
                 print("I am in coding question")
-                interview_question_prompt_template = PromptTemplate(
-                    input_variables =["interview_question_asked","candidate_response"],
-                    template = c_interview_question_prompt
+                code_question_prompt_template = PromptTemplate(
+                    input_variables =["code_question_asked","candidate_response"],
+                    template = c_code_question_prompt
                 )
-                interview_question_query = interview_question_prompt_template.format(
+                code_question_query = code_question_prompt_template.format(
                         candidate_response = summarized_response_str,
-                        interview_question_asked = random_question
+                        code_question_asked = random_question
                 )
                 # Do multi-threading to speed up the process
-                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(interview_question_query,))
-                ai_answer_thread = ReturnValueThread(target=chat.predict, args=(c_ai_answer_promt.format(interview_question_asked = random_question),)) 
+                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(code_question_query,))
+                ai_answer_thread = ReturnValueThread(target=chat.predict, args=(c_ai_answer_promt.format(code_question_asked = random_question),)) 
 
                 ai_evaluation_thread.start()
                 ai_answer_thread.start()
@@ -116,17 +116,17 @@ def evaluate_by_ai_interviewer(question_choices, candidate_response_str, random_
             else:
                 # Create a prompt template to use in langchain
                 print("I am in ml system design question")
-                interview_question_prompt_template = PromptTemplate(
-                    input_variables =["interview_question_asked","candidate_response"],
-                    template = ms_interview_question_prompt
+                code_question_prompt_template = PromptTemplate(
+                    input_variables =["code_question_asked","candidate_response"],
+                    template = ms_code_question_prompt
                 )
-                interview_question_query = interview_question_prompt_template.format(
+                code_question_query = code_question_prompt_template.format(
                         candidate_response = summarized_response_str,
-                        interview_question_asked = random_question
+                        code_question_asked = random_question
                 )
                 # Do multi-threading to speed up the process
-                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(interview_question_query,))
-                ai_answer_thread = ReturnValueThread(target=chat.predict, args=(ms_ai_answer_promt.format(interview_question_asked = random_question),)) 
+                ai_evaluation_thread = ReturnValueThread(target=chat.predict, args=(code_question_query,))
+                ai_answer_thread = ReturnValueThread(target=chat.predict, args=(ms_ai_answer_promt.format(code_question_asked = random_question),)) 
 
                 ai_evaluation_thread.start()
                 ai_answer_thread.start()
@@ -165,12 +165,12 @@ def change_choice(choice):
 with gr.Blocks(title='Guru.AI') as coach_gpt_gradio_ui:
     gr.Markdown(
     """
-    # ✨ Welcome to the 🧘🏻‍♂️ **Guru**, your AI Interviewer for ML Engineering Leadership and Manageral Roles!
+    # ✨ Welcome to the 🧘🏻‍♂️ **Guru**, your AI codeer for ML Engineering Leadership and Manageral Roles!
     
     ## 🤔 How it Works :
 
         1) Choose the type of question you want to be asked.
-        2) Click on the button "Generate Random Interview Question" to generate a random interview question.
+        2) Click on the button "Generate Random code Question" to generate a random code question.
         3) If you choose leadership question you can record your answer and then we will do transcription OR Enter your response to the question. Try to use 
         less than 2000 words.
         4) Click on the button "Guru Evaluation of the Candidate Response" to evaluate the your response.
@@ -197,10 +197,10 @@ with gr.Blocks(title='Guru.AI') as coach_gpt_gradio_ui:
         label = "🧘🏻‍♂️ What kind of question do you want me to ask?",
         value="Leadership and Behavioural Question")
 
-        btn_random_question = gr.Button("🎲 Generate me random a interview question", 
+        btn_random_question = gr.Button("🎲 Generate me random a code question", 
                                             size='sm', scale=1).style(full_width=False)
         
-        random_question = gr.Textbox(label="❓interview question", )
+        random_question = gr.Textbox(label="❓code question", )
         
         with gr.Column(visible=True) as audio_visibility:
             candidate_response_audio_input = gr.Audio(label="record your response", 
@@ -219,7 +219,7 @@ with gr.Blocks(title='Guru.AI') as coach_gpt_gradio_ui:
                                             y = "Percentage",
                                             x_title = "Leadership Principles",
                                             y_title = "Percentage",
-                                            title = "similarity of the interviewee's response to the leadership principles",
+                                            title = "similarity of the codeee's response to the leadership principles",
                                             vertical = False)
         
         ai_answer = gr.Textbox(label= '🧘🏻‍♂️ Guru answer to the question', max_lines = 100)
@@ -247,9 +247,9 @@ with gr.Blocks(title='Guru.AI') as coach_gpt_gradio_ui:
                                             api_name="audio_transcribe")
 
         evaluate_by_ai.click(
-                  fn=evaluate_by_ai_interviewer, 
+                  fn=evaluate_by_ai_codeer, 
                   inputs=[question_choices, candidate_response_str, random_question], 
                   outputs = [ai_evaluation, ai_detailed_evaluation, ai_similarity_analysis, ai_answer], 
-                  api_name="evaluate_by_ai_interviewer")
+                  api_name="evaluate_by_ai_code")
 
 coach_gpt_gradio_ui.launch(share=True, width=500, height=700, debug=True, favicon_path="guru.ico",)
