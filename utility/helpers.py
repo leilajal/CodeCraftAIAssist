@@ -121,27 +121,27 @@ class DbOps:
             question = line.strip().lower()
             self.add_question(table, question, '##')
 
-def get_random_interview_question(table_name):
+def get_random_code_question(table_name):
         """
-        This function returns a random interview question from the database.
+        This function returns a random code question from the database.
         """
-        db = DbOps('resources/interview_questions.db')
+        db = DbOps('resources/code_questions.db')
 
-        db.create_table('coding_interview_questions')
-        db.create_table('leadership_interview_questions')
-        db.create_table('ml_system_design_interview_questions')
+        db.create_table('coding_code_questions')
+        db.create_table('leadership_code_questions')
+        db.create_table('ml_system_design_code_questions')
         
-        if table_name == 'coding_interview_questions':
-            db.populate_db('coding_interview_questions', 'resources/sample_coding_questions.txt')
+        if table_name == 'coding_code_questions':
+            db.populate_db('coding_code_questions', 'resources/sample_coding_questions.txt')
         
-        if table_name == 'leadership_interview_questions':
-            db.populate_db('leadership_interview_questions', 'resources/sample_behavioral_questions.txt')
+        if table_name == 'leadership_code_questions':
+            db.populate_db('leadership_code_questions', 'resources/sample_behavioral_questions.txt')
         
-        if table_name == 'ml_system_design_interview_questions':
-            db.populate_db('ml_system_design_interview_questions', 'resources/sample_ML_System_Design_questions.txt')
+        if table_name == 'ml_system_design_code_questions':
+            db.populate_db('ml_system_design_code_questions', 'resources/sample_ML_System_Design_questions.txt')
         
-        interview_question = db.get_random_element(table_name)
-        return interview_question 
+        code_question = db.get_random_element(table_name)
+        return code_question 
 
 def get_transcript_from_youtube_video(video_id, file_path):
     """
@@ -160,8 +160,8 @@ def get_transcript_from_youtube_video(video_id, file_path):
     for txt in transcript:
         res += ' ' + txt['text']
 
-    with open(file_path, 'w', encoding='utf-8') as interview:
-        interview.write(res) 
+    with open(file_path, 'w', encoding='utf-8') as code:
+        code.write(res) 
     return res
 
 def summarize_response(txt):
@@ -203,7 +203,7 @@ def calculate_similarity_to_leadership_principles(leadership_principles,
     for key, value in leadership_principles.items():
         leadership_principles_embedding[key] = embedding.embed_query(value)
 
-    # Embedding summarized text, interviewee response
+    # Embedding summarized text, code response
     summarized_response_vector = embedding.embed_query(summarized_response)
     # Embedding random story as a baseline
     random_story_vector = embedding.embed_query(random_story)
@@ -247,7 +247,7 @@ def plot_horizontal_bar_chart(data_dict):
     plt.barh(keys[::-1], values[::-1], color=l, edgecolor='black', linewidth=1)
 
     # Set the title and axis labels
-    plt.title('Similarity of the Interviewee\'s Response to the Leadership Principles')
+    plt.title('Similarity of the code\'s Response to the Leadership Principles')
     plt.xlabel('Percentage')
     plt.ylabel('Leadership Principles')
 
