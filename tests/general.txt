@@ -1,0 +1,8 @@
+Kubernetes client libraries can be used to access custom resources. Not all client libraries support custom resources. The Go and Python client libraries do.
+
+When you add a custom resource, you can access it using:
+
+kubectl
+The Kubernetes dynamic client.
+A REST client that you write.
+A client generated using Kubernetes client generation tools (generating one is an advanced undertaking, but some projects may provide a client along with the CRD or AA).
