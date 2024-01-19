@@ -1,6 +1,0 @@
-You want to use Kubernetes client libraries and CLIs to create and update the new resource.
-You want top-level support from kubectl; for example, kubectl get my-object object-name.
-You want to build new automation that watches for updates on the new object, and then CRUD other objects, or vice versa.
-You want to write automation that handles updates to the object.
-You want to use Kubernetes API conventions like .spec, .status, and .metadata.
-You want the object to be an abstraction over a collection of controlled resources, or a summarization of other resources.
