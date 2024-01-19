@@ -1,7 +1,0 @@
-json:
-  spec:
-    foo: abc
-    bar: def
-    something: x
-  status:
-    something: x
